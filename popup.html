@@ -90,6 +90,68 @@
     }
     .copy-result:hover { background: #f0f0f2; }
     .hidden { display: none; }
+
+    .memo-toggle {
+      display: block;
+      width: 100%;
+      margin-top: 14px;
+      padding: 8px;
+      background: #fff;
+      border: 1px solid #e5e5e7;
+      border-radius: 8px;
+      font-size: 12px;
+      font-family: inherit;
+      color: #86868b;
+      cursor: pointer;
+      text-align: center;
+    }
+    .memo-toggle:hover { background: #f0f0f2; }
+    .memo-box {
+      display: none;
+      margin-top: 10px;
+      background: #fff;
+      border: 1px solid #e5e5e7;
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 11px;
+      line-height: 1.7;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .memo-box.open { display: block; }
+    .memo-box h3 {
+      font-size: 12px;
+      color: #2e7d32;
+      margin: 10px 0 4px;
+      padding-bottom: 2px;
+      border-bottom: 1px solid #e8f5e9;
+    }
+    .memo-box h3:first-child { margin-top: 0; }
+    .memo-box table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 6px 0;
+      font-size: 11px;
+    }
+    .memo-box th {
+      background: #f5f5f5;
+      padding: 4px 6px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 10px;
+      color: #666;
+      border-bottom: 1px solid #e5e5e7;
+    }
+    .memo-box td {
+      padding: 4px 6px;
+      border-bottom: 1px solid #f0f0f2;
+      vertical-align: top;
+    }
+    .memo-box .drug-name { font-weight: 600; color: #1d1d1f; }
+    .memo-box .note { color: #c62828; font-size: 10px; }
+    .memo-box .info { color: #555; }
+    .memo-box ul { padding-left: 14px; margin: 2px 0; }
+    .memo-box li { margin-bottom: 2px; }
   </style>
 </head>
 <body>
@@ -112,81 +174,83 @@
     <button class="copy-result" id="copyBtn">📋 コピー</button>
   </div>
 
-  <script>
-    const baseDateEl = document.getElementById('baseDate');
-    const daysEl = document.getElementById('days');
-    const resultBox = document.getElementById('resultBox');
-    const resultDate = document.getElementById('resultDate');
-    const resultDetail = document.getElementById('resultDetail');
-    const resultWeekday = document.getElementById('resultWeekday');
-    const weekdays = ['日', '月', '火', '水', '木', '金', '土'];
+  <button class="memo-toggle" id="memoToggle">📋 爪白癬 治療メモ ▼</button>
+  <div class="memo-box" id="memoBox">
+    <h3>◆ 内服薬</h3>
+    <table>
+      <tr>
+        <th>薬剤</th><th>用法・用量</th><th>日数目安</th><th>特徴</th>
+      </tr>
+      <tr>
+        <td class="drug-name">ラミシール錠125mg<br><span class="info">テルビナフィン</span></td>
+        <td>125mg 1日1回食後<br>6ヶ月連続内服</td>
+        <td>約180日</td>
+        <td>
+          <ul>
+            <li>治療効果はイトラコナゾールより高い</li>
+            <li>併用禁忌なし</li>
+            <li class="note">肝機能障害・血球減少の副作用あり → 定期的血液検査必要</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td class="drug-name">イトリゾールカプセル50<br><span class="info">イトラコナゾール</span></td>
+        <td>1回200mg 1日2回<br>(1日量400mg)<br>食直後 1週投与→3週休薬<br>×3サイクル</td>
+        <td>約77日<br>(実服用21日)</td>
+        <td>
+          <ul>
+            <li>治療期間はラミシールより短い</li>
+            <li class="note">併用禁忌薬・注意薬が多い</li>
+            <li class="note">後発品の品質に注意</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td class="drug-name">ネイリンカプセル100mg<br><span class="info">ホスラブコナゾール</span></td>
+        <td>1日1回1カプセル<br>12週間経口投与</td>
+        <td>84日</td>
+        <td>
+          <ul>
+            <li>併用禁忌なし</li>
+            <li>CYP3A4注意（シンバスタチン、ミダゾラム、ワルファリン）</li>
+            <li>食事に関係なく服用可</li>
+          </ul>
+        </td>
+      </tr>
+    </table>
 
-    // 今日をセット
-    function setToday() {
-      const now = new Date();
-      baseDateEl.value = formatISO(now);
-    }
-    document.getElementById('todayBtn').addEventListener('click', setToday);
-    setToday();
+    <h3>◆ 外用薬</h3>
+    <table>
+      <tr>
+        <th>薬剤</th><th>用法</th><th>特徴</th>
+      </tr>
+      <tr>
+        <td class="drug-name">クレナフィン爪外用液10%<br><span class="info">エフィナコナゾール</span></td>
+        <td>1日1回 罹患爪全体に塗布</td>
+        <td>
+          <ul>
+            <li>直接鏡検/培養で確定診断が必要</li>
+            <li>容器に刷毛付き → 塗りやすい</li>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <td class="drug-name">ルコナック爪外用液10%<br><span class="info">ルリコナゾール</span></td>
+        <td>1日1回 罹患爪全体に塗布</td>
+        <td>
+          <ul>
+            <li>直接鏡検/培養で確定診断が必要</li>
+            <li>ルリコナゾールは抗真菌作用が強い</li>
+            <li>容器の先端を爪に押し当てて塗る</li>
+          </ul>
+        </td>
+      </tr>
+    </table>
 
-    function formatISO(d) {
-      return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-    }
+    <h3>◆ 治療期間の目安</h3>
+    <p class="info">爪が根元から指先まで伸びるのに6ヶ月〜1年程度。治療開始から治癒まで6ヶ月〜1年以上。3ヶ月で内服終了する治療法でも、きれいな爪に生え変わるまでには数ヶ月かかる。</p>
+  </div>
 
-    function calc() {
-      const base = baseDateEl.value;
-      const days = parseInt(daysEl.value);
-      if (!base || isNaN(days)) {
-        resultBox.classList.add('hidden');
-        return;
-      }
-
-      const baseD = new Date(base + 'T00:00:00');
-      const result = new Date(baseD);
-      result.setDate(result.getDate() + days);
-
-      const y = result.getFullYear();
-      const m = result.getMonth() + 1;
-      const d = result.getDate();
-      const wd = weekdays[result.getDay()];
-
-      resultDate.textContent = m + '月' + d + '日（' + wd + '）';
-
-      // 基準日からの差
-      const diffMs = result - baseD;
-      const diffDays = Math.round(diffMs / (1000*60*60*24));
-      const direction = diffDays >= 0 ? '後' : '前';
-      const absDays = Math.abs(diffDays);
-      const weeks = Math.floor(absDays / 7);
-      const remainDays = absDays % 7;
-      let detail = y + '年' + m + '月' + d + '日 — ' + absDays + '日' + direction;
-      if (weeks > 0) {
-        detail += '（' + weeks + '週' + (remainDays > 0 ? remainDays + '日' : '') + '）';
-      }
-      resultDetail.textContent = detail;
-
-      // 曜日色
-      const dayOfWeek = result.getDay();
-      resultWeekday.textContent = wd + '曜日';
-      resultWeekday.className = 'result-weekday ' + (dayOfWeek === 0 ? 'wd-sun' : dayOfWeek === 6 ? 'wd-sat' : 'wd-week');
-
-      resultBox.classList.remove('hidden');
-    }
-
-    baseDateEl.addEventListener('input', calc);
-    daysEl.addEventListener('input', calc);
-
-    // コピー
-    document.getElementById('copyBtn').addEventListener('click', () => {
-      const text = resultDate.textContent + ' ' + resultDetail.textContent;
-      navigator.clipboard.writeText(text).then(() => {
-        document.getElementById('copyBtn').textContent = '✓ コピー済み';
-        setTimeout(() => { document.getElementById('copyBtn').textContent = '📋 コピー'; }, 1200);
-      });
-    });
-
-    // 初期フォーカス
-    daysEl.focus();
-  </script>
+  <script src="popup.js"></script>
 </body>
 </html>

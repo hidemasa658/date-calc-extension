@@ -90,6 +90,17 @@
     }
     .copy-result:hover { background: #f0f0f2; }
     .hidden { display: none; }
+    .elapsed-box {
+      background: #e8f0fe;
+      border: 1px solid #c4d7f5;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      text-align: center;
+      font-size: 13px;
+      color: #0071e3;
+      font-weight: 600;
+    }
 
     .memo-toggle {
       display: block;
@@ -160,6 +171,10 @@
   <div class="field">
     <label>基準日 <button class="today-btn" id="todayBtn">今日</button></label>
     <input type="date" id="baseDate">
+  </div>
+
+  <div class="elapsed-box hidden" id="elapsedBox">
+    <span id="elapsedText"></span>
   </div>
 
   <div class="field">

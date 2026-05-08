@@ -10,9 +10,30 @@ function formatISO(d) {
   return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
 }
 
+const elapsedBox = document.getElementById('elapsedBox');
+const elapsedText = document.getElementById('elapsedText');
+
 function setToday() {
   baseDateEl.value = formatISO(new Date());
   calc();
+}
+
+function updateElapsed() {
+  const base = baseDateEl.value;
+  if (!base) { elapsedBox.classList.add('hidden'); return; }
+  const baseD = new Date(base + 'T00:00:00');
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const diffDays = Math.round((today - baseD) / (1000 * 60 * 60 * 24));
+  if (diffDays <= 0) { elapsedBox.classList.add('hidden'); return; }
+  const weeks = Math.floor(diffDays / 7);
+  const rem = diffDays % 7;
+  let text = '今日まで ' + diffDays + '日経過';
+  if (weeks > 0) {
+    text += '（' + weeks + '週' + (rem > 0 ? rem + '日' : '') + '）';
+  }
+  elapsedText.textContent = text;
+  elapsedBox.classList.remove('hidden');
 }
 
 function calc() {
@@ -54,7 +75,7 @@ function calc() {
 }
 
 document.getElementById('todayBtn').addEventListener('click', setToday);
-baseDateEl.addEventListener('input', calc);
+baseDateEl.addEventListener('input', () => { updateElapsed(); calc(); });
 daysEl.addEventListener('input', calc);
 
 document.getElementById('copyBtn').addEventListener('click', () => {
